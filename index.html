@@ -518,6 +518,7 @@ input[type="range"] {
     border: 1px solid rgba(255,102,117,.22);
     font-size: 12px;
     line-height: 1.5;
+    white-space: pre-wrap;
 }
 
 .warning {
@@ -551,6 +552,17 @@ input[type="range"] {
     animation: spin .7s linear infinite;
 }
 
+.engine-status {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 11px;
+    color: #a9dfff;
+    background: rgba(56,164,255,.06);
+    border: 1px solid rgba(56,164,255,.12);
+    font-size: 11px;
+    display: none;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
@@ -558,6 +570,7 @@ input[type="range"] {
 }
 
 @media (max-width: 820px) {
+
     body {
         padding: 15px;
     }
@@ -580,6 +593,7 @@ input[type="range"] {
 }
 
 @media (max-width: 500px) {
+
     .brand h1 {
         font-size: 20px;
     }
@@ -784,10 +798,11 @@ input[type="range"] {
     <p>
         320×240 video, 15 FPS, MPEG-4 video,
         mono AAC audio and a small file size.
-        Video is center-cropped to fit the selected resolution.
+        Videos are center-cropped to fit the selected resolution.
     </p>
 
 </div>
+
 
 <div class="setting">
 
@@ -817,6 +832,7 @@ input[type="range"] {
 
 </div>
 
+
 <div class="setting">
 
     <label for="resolution">
@@ -843,6 +859,7 @@ input[type="range"] {
     </select>
 
 </div>
+
 
 <div class="setting">
 
@@ -879,6 +896,7 @@ input[type="range"] {
 
 </div>
 
+
 <div class="setting">
 
     <label for="quality">
@@ -906,6 +924,7 @@ input[type="range"] {
 
 </div>
 
+
 <div class="setting">
 
     <label for="videoFormat">
@@ -925,6 +944,7 @@ input[type="range"] {
     </select>
 
 </div>
+
 
 <div class="setting">
 
@@ -953,6 +973,7 @@ input[type="range"] {
 
 </div>
 
+
 <div class="actions">
 
     <button
@@ -972,6 +993,11 @@ input[type="range"] {
     </button>
 
 </div>
+
+<div
+    class="engine-status"
+    id="engineStatus"
+></div>
 ```
 
 </div>
@@ -1075,18 +1101,23 @@ Media is processed locally in your browser
 
 <!--
 =========================================================
-FFmpeg.wasm 0.11.6
+FFmpeg.wasm 0.12.10 SINGLE-THREAD
 
-This is the single-threaded FFmpeg.wasm build.
-It works without SharedArrayBuffer requirements and
-is suitable for normal GitHub Pages hosting.
+The single-thread core does NOT require SharedArrayBuffer.
+
+The core JavaScript and WASM are fetched with toBlobURL()
+so the FFmpeg worker can load them from blob URLs instead
+of attempting to load them directly cross-origin.
 =========================================================
 -->
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
 
 <script>
 "use strict";
+
 
 /* =====================================================
    ELEMENTS
@@ -1182,6 +1213,9 @@ const errorBox =
 const warningBox =
     document.getElementById("warningBox");
 
+const engineStatus =
+    document.getElementById("engineStatus");
+
 
 /* =====================================================
    STATE
@@ -1200,6 +1234,10 @@ let ffmpegLoaded = false;
 let ffmpegLoading = false;
 
 let conversionRunning = false;
+
+let ffmpegCoreBlobURL = null;
+
+let ffmpegWasmBlobURL = null;
 
 
 /* =====================================================
@@ -1348,9 +1386,31 @@ function setProgress(
         Math.round(safe) + "%";
 
     if (status) {
+
         progressStatus.textContent =
             status;
     }
+}
+
+
+function setEngineStatus(message) {
+
+    if (!message) {
+
+        engineStatus.textContent =
+            "";
+
+        engineStatus.style.display =
+            "none";
+
+        return;
+    }
+
+    engineStatus.textContent =
+        message;
+
+    engineStatus.style.display =
+        "block";
 }
 
 
@@ -1363,6 +1423,7 @@ chooseButton.addEventListener(
     () => {
 
         if (!conversionRunning) {
+
             fileInput.click();
         }
     }
@@ -1378,6 +1439,7 @@ fileInput.addEventListener(
             event.target.files[0];
 
         if (file) {
+
             loadFile(file);
         }
     }
@@ -1440,6 +1502,7 @@ dropZone.addEventListener(
     event => {
 
         if (conversionRunning) {
+
             return;
         }
 
@@ -1450,6 +1513,7 @@ dropZone.addEventListener(
             !files ||
             !files.length
         ) {
+
             return;
         }
 
@@ -1465,7 +1529,10 @@ dropZone.addEventListener(
 function loadFile(file) {
 
     hideError();
+
     hideWarning();
+
+    setEngineStatus("");
 
     if (
         !file.type.startsWith("image/") &&
@@ -1546,7 +1613,7 @@ function loadFile(file) {
         loadVideoPreview();
 
         showWarning(
-            "For video, FFmpeg.wasm is loaded directly in your browser. The first conversion can take a little longer."
+            "Video conversion uses FFmpeg.wasm directly in your browser. The first conversion downloads the converter engine."
         );
     }
 
@@ -1630,6 +1697,16 @@ function loadVideoPreview() {
                 formatDuration(
                     video.duration
                 );
+        }
+    );
+
+    video.addEventListener(
+        "error",
+        () => {
+
+            showError(
+                "The browser could not preview this video. The converter may still be able to process it."
+            );
         }
     );
 
@@ -1739,6 +1816,7 @@ function applyPreset() {
 function updateControls() {
 
     if (!currentFile) {
+
         return;
     }
 
@@ -1906,7 +1984,7 @@ async function convertImage() {
 
 
 /* =====================================================
-   LOAD FFMPEG
+   LOAD MODERN FFMPEG.WASM
 ====================================================== */
 
 async function loadFFmpeg() {
@@ -1956,18 +2034,14 @@ async function loadFFmpeg() {
             "Checking FFmpeg.wasm..."
         );
 
+        setEngineStatus(
+            "Preparing single-thread FFmpeg.wasm..."
+        );
+
+
         /*
-         * IMPORTANT:
-         *
-         * FFmpeg.wasm 0.11 exposes createFFmpeg
-         * through window.FFmpeg.
-         *
-         * The previous version incorrectly checked:
-         *
-         * window.createFFmpeg
-         *
-         * which caused GitHub Pages to report that
-         * the converter could not start.
+         * 0.12 uses the FFmpeg class instead of
+         * createFFmpeg().
          */
 
         if (
@@ -1976,113 +2050,248 @@ async function loadFFmpeg() {
         ) {
 
             throw new Error(
-                "The FFmpeg.wasm library did not load."
+                "The FFmpeg library JavaScript file did not load."
             );
         }
 
+
         if (
-            typeof window.FFmpeg.createFFmpeg !==
+            typeof window.FFmpeg.FFmpeg !==
             "function"
         ) {
 
             throw new Error(
-                "The FFmpeg.wasm createFFmpeg function was not found."
+                "The FFmpeg class was not found."
             );
         }
 
-        setProgress(
-            5,
-            "Downloading FFmpeg engine..."
-        );
-
-        /*
-         * Use the official 0.11 core.
-         *
-         * 0.11 is intentionally used because it can
-         * operate on ordinary GitHub Pages without
-         * requiring the cross-origin isolation setup
-         * normally associated with newer builds.
-         */
-
-        const corePath =
-            "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js";
-
-        ffmpeg =
-            window.FFmpeg.createFFmpeg({
-
-                log: true,
-
-                corePath: corePath,
-
-                progress:
-                    ({ ratio }) => {
-
-                        if (
-                            Number.isFinite(
-                                ratio
-                            )
-                        ) {
-
-                            const percent =
-                                10 +
-                                Math.round(
-                                    Math.max(
-                                        0,
-                                        Math.min(
-                                            1,
-                                            ratio
-                                        )
-                                    ) * 85
-                                );
-
-                            setProgress(
-                                percent,
-                                "Encoding video..."
-                            );
-                        }
-                    }
-            });
 
         if (
-            typeof ffmpeg.setLogger ===
+            typeof window.FFmpegUtil ===
+            "undefined"
+        ) {
+
+            throw new Error(
+                "The FFmpeg utility library did not load."
+            );
+        }
+
+
+        if (
+            typeof window.FFmpegUtil.toBlobURL !==
             "function"
         ) {
 
-            ffmpeg.setLogger(
-                ({ type, message }) => {
-
-                    console.log(
-                        "[FFmpeg]",
-                        type,
-                        message
-                    );
-                }
+            throw new Error(
+                "The FFmpeg toBlobURL function was not found."
             );
         }
 
+
+        const FFmpegClass =
+            window.FFmpeg.FFmpeg;
+
+        const toBlobURL =
+            window.FFmpegUtil.toBlobURL;
+
+
+        /*
+         * Create a fresh single-thread FFmpeg
+         * instance.
+         */
+
+        ffmpeg =
+            new FFmpegClass();
+
+
+        /*
+         * Logging.
+         */
+
+        ffmpeg.on(
+            "log",
+            ({ message }) => {
+
+                console.log(
+                    "[FFmpeg]",
+                    message
+                );
+            }
+        );
+
+
+        /*
+         * Progress.
+         */
+
+        ffmpeg.on(
+            "progress",
+            ({ progress }) => {
+
+                if (
+                    Number.isFinite(
+                        progress
+                    )
+                ) {
+
+                    const percent =
+                        12 +
+                        Math.round(
+                            Math.max(
+                                0,
+                                Math.min(
+                                    1,
+                                    progress
+                                )
+                            ) *
+                            82
+                        );
+
+                    setProgress(
+                        percent,
+                        "Encoding video..."
+                    );
+                }
+            }
+        );
+
+
+        /*
+         * Official single-thread core.
+         *
+         * We deliberately use @ffmpeg/core rather
+         * than @ffmpeg/core-mt.
+         */
+
+        const baseURL =
+            "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
+
+
         setProgress(
-            7,
+            4,
+            "Downloading FFmpeg engine..."
+        );
+
+
+        /*
+         * Download the JavaScript core through
+         * toBlobURL().
+         *
+         * This converts the cross-origin response
+         * into a local blob URL for the FFmpeg worker.
+         */
+
+        ffmpegCoreBlobURL =
+            await toBlobURL(
+                baseURL +
+                "/ffmpeg-core.js",
+                "text/javascript",
+                true,
+                progress => {
+
+                    if (
+                        Number.isFinite(
+                            progress
+                        )
+                    ) {
+
+                        setProgress(
+                            4 +
+                            Math.round(
+                                progress * 3
+                            ),
+                            "Downloading FFmpeg engine..."
+                        );
+                    }
+                }
+            );
+
+
+        setProgress(
+            8,
+            "Downloading FFmpeg WebAssembly..."
+        );
+
+
+        /*
+         * Same treatment for the WASM binary.
+         */
+
+        ffmpegWasmBlobURL =
+            await toBlobURL(
+                baseURL +
+                "/ffmpeg-core.wasm",
+                "application/wasm",
+                true,
+                progress => {
+
+                    if (
+                        Number.isFinite(
+                            progress
+                        )
+                    ) {
+
+                        setProgress(
+                            8 +
+                            Math.round(
+                                progress * 3
+                            ),
+                            "Downloading FFmpeg WebAssembly..."
+                        );
+                    }
+                }
+            );
+
+
+        setProgress(
+            11,
             "Starting FFmpeg engine..."
         );
 
-        await ffmpeg.load();
+
+        /*
+         * IMPORTANT:
+         *
+         * No workerURL is supplied here.
+         *
+         * That means this is the SINGLE-THREAD core.
+         *
+         * SharedArrayBuffer is not required.
+         */
+
+        await ffmpeg.load({
+            coreURL:
+                ffmpegCoreBlobURL,
+
+            wasmURL:
+                ffmpegWasmBlobURL
+        });
+
 
         ffmpegLoaded =
             true;
 
+
+        setEngineStatus(
+            "FFmpeg ready — single-thread mode"
+        );
+
+
         setProgress(
-            10,
+            12,
             "Video converter ready."
         );
+
 
         return ffmpeg;
 
     } catch (error) {
 
         console.error(
-            "FFmpeg load error:",
+            "FFmpeg startup error:",
             error
         );
+
 
         ffmpeg =
             null;
@@ -2090,24 +2299,30 @@ async function loadFFmpeg() {
         ffmpegLoaded =
             false;
 
-        let message =
-            "The video converter could not start.";
+
+        setEngineStatus(
+            ""
+        );
+
+
+        let details =
+            "";
 
         if (
             error &&
             error.message
         ) {
 
-            message +=
-                " FFmpeg error: " +
+            details =
+                "\n\nFFmpeg message: " +
                 error.message;
         }
 
-        message +=
-            " Check that GitHub Pages is online and reload the page.";
 
         throw new Error(
-            message
+            "The video converter could not start." +
+            details +
+            "\n\nMake sure the GitHub Pages site is connected to the internet and reload the page."
         );
 
     } finally {
@@ -2124,22 +2339,24 @@ async function loadFFmpeg() {
 
 function getFetchFile() {
 
+    /*
+     * Modern FFmpeg.wasm uses fetchFile from
+     * @ffmpeg/util.
+     */
+
     if (
-        window.FFmpeg &&
-        typeof window.FFmpeg.fetchFile ===
+        window.FFmpegUtil &&
+        typeof window.FFmpegUtil.fetchFile ===
             "function"
     ) {
 
-        return window.FFmpeg.fetchFile;
+        return window.FFmpegUtil.fetchFile;
     }
 
-    if (
-        typeof window.fetchFile ===
-            "function"
-    ) {
 
-        return window.fetchFile;
-    }
+    /*
+     * Local File/Blob fallback.
+     */
 
     return async function(file) {
 
@@ -2165,13 +2382,20 @@ async function convertVideo() {
     const fetchFile =
         getFetchFile();
 
+
     progressTitle.textContent =
         "Preparing video...";
 
+
     setProgress(
-        12,
+        13,
         "Reading source video..."
     );
+
+
+    /*
+     * Determine the source extension.
+     */
 
     let inputExtension =
         currentFile.name
@@ -2183,11 +2407,13 @@ async function convertVideo() {
                 ""
             );
 
+
     if (!inputExtension) {
 
         inputExtension =
             "mp4";
     }
+
 
     if (
         inputExtension ===
@@ -2198,6 +2424,7 @@ async function convertVideo() {
             "mov";
     }
 
+
     if (
         inputExtension ===
         "mpeg"
@@ -2207,14 +2434,11 @@ async function convertVideo() {
             "mpg";
     }
 
-    /*
-     * Keep filenames simple for the FFmpeg
-     * virtual filesystem.
-     */
 
     const inputName =
         "source." +
         inputExtension;
+
 
     const outputExtension =
         videoFormat.value ===
@@ -2222,58 +2446,79 @@ async function convertVideo() {
             ? "3gp"
             : "mp4";
 
+
     const outputName =
         "nokia_output." +
         outputExtension;
 
+
     /*
-     * Remove old virtual files if they somehow
-     * still exist from a previous conversion.
+     * Clean previous virtual files.
      */
 
     try {
-        engine.FS(
-            "unlink",
+
+        await engine.deleteFile(
             inputName
         );
+
     } catch (_) {}
+
 
     try {
-        engine.FS(
-            "unlink",
+
+        await engine.deleteFile(
             outputName
         );
+
     } catch (_) {}
 
-    /*
-     * Write source video into FFmpeg memory.
-     */
-
-    await engine.FS(
-        "writeFile",
-        inputName,
-        await fetchFile(
-            currentFile
-        )
-    );
 
     setProgress(
-        17,
+        16,
+        "Loading source video into converter..."
+    );
+
+
+    /*
+     * Modern API:
+     *
+     * await ffmpeg.writeFile(...)
+     */
+
+    const sourceData =
+        await fetchFile(
+            currentFile
+        );
+
+
+    await engine.writeFile(
+        inputName,
+        sourceData
+    );
+
+
+    setProgress(
+        18,
         "Configuring Nokia video..."
     );
+
 
     const parts =
         resolution.value
             .split("x")
             .map(Number);
 
+
     const targetWidth =
         parts[0] ||
         320;
 
+
     const targetHeight =
         parts[1] ||
         240;
+
 
     const frameRate =
         Number(
@@ -2281,21 +2526,22 @@ async function convertVideo() {
         ) ||
         15;
 
+
     const qualityNumber =
         Number(
             quality.value
         ) ||
         5;
 
+
     /*
-     * MPEG-4 qscale:
+     * FFmpeg MPEG-4 qscale.
      *
-     * Slider:
-     * 1 = lower quality
-     * 10 = higher quality
+     * Lower number = higher quality.
      *
-     * FFmpeg:
-     * lower qscale = better quality
+     * UI:
+     * 1 = lower
+     * 10 = higher
      */
 
     const qscale =
@@ -2308,31 +2554,26 @@ async function convertVideo() {
             )
         );
 
+
     /*
      * CENTER CROP
      *
-     * This is intentionally NOT:
+     * First enlarge the video enough to completely
+     * fill the requested rectangle.
      *
-     * scale -> pad
+     * Then crop the excess from the centre.
      *
-     * because that creates black bars.
+     * This means:
      *
-     * Instead:
+     * 16:9 -> 4:3:
+     * left/right edges removed.
      *
-     * 1. Scale the video until it completely
-     *    fills the target rectangle.
+     * Tall video -> 4:3:
+     * top/bottom removed.
      *
-     * 2. Crop the excess from the edges.
+     * No black bars.
      *
-     * FFmpeg's crop filter is centered by default.
-     *
-     * Examples:
-     *
-     * 16:9 -> 4:3
-     * Crops the left and right edges.
-     *
-     * Tall video -> 4:3
-     * Crops the top and bottom.
+     * No stretching.
      */
 
     const videoFilter =
@@ -2341,7 +2582,6 @@ async function convertVideo() {
         ":" +
         targetHeight +
         ":force_original_aspect_ratio=increase," +
-
         "crop=" +
         targetWidth +
         ":" +
@@ -2349,8 +2589,9 @@ async function convertVideo() {
         ":(in_w-out_w)/2:" +
         "(in_h-out_h)/2";
 
+
     /*
-     * Build FFmpeg command.
+     * Build modern FFmpeg command.
      */
 
     const command = [
@@ -2386,8 +2627,9 @@ async function convertVideo() {
         "1"
     ];
 
+
     /*
-     * Use a 3GP container when selected.
+     * 3GP container when selected.
      */
 
     if (
@@ -2401,54 +2643,84 @@ async function convertVideo() {
         );
     }
 
+
     command.push(
         outputName
     );
+
+
+    console.log(
+        "FFmpeg command:",
+        command
+    );
+
 
     setProgress(
         20,
         "Encoding video..."
     );
 
+
     try {
 
-        await engine.run(
-            ...command
+        /*
+         * Modern 0.12 API:
+         *
+         * ffmpeg.exec([...])
+         */
+
+        await engine.exec(
+            command
         );
 
     } catch (error) {
 
         console.error(
-            "FFmpeg video error:",
+            "FFmpeg conversion error:",
             error
         );
 
+
         try {
 
-            engine.FS(
-                "unlink",
+            await engine.deleteFile(
                 inputName
             );
 
         } catch (_) {}
 
+
         throw new Error(
-            "FFmpeg could not convert this video. Try MP4 with the Nokia 4G preset (320×240, 15 FPS)."
+            "FFmpeg could not convert this video.\n\n" +
+            (
+                error &&
+                error.message
+                    ? error.message
+                    : "Unknown FFmpeg error."
+            )
         );
     }
+
 
     setProgress(
         96,
         "Building download file..."
     );
 
+
     let outputData;
+
 
     try {
 
+        /*
+         * Modern 0.12 API:
+         *
+         * await ffmpeg.readFile(...)
+         */
+
         outputData =
-            engine.FS(
-                "readFile",
+            await engine.readFile(
                 outputName
             );
 
@@ -2459,24 +2731,33 @@ async function convertVideo() {
             error
         );
 
+
         try {
 
-            engine.FS(
-                "unlink",
+            await engine.deleteFile(
                 inputName
             );
 
         } catch (_) {}
+
 
         throw new Error(
             "The conversion finished but the output file could not be read."
         );
     }
 
+
+    /*
+     * Make Blob.
+     */
+
     const outputBytes =
-        new Uint8Array(
-            outputData
-        );
+        outputData instanceof Uint8Array
+            ? outputData
+            : new Uint8Array(
+                outputData
+            );
+
 
     const mime =
         outputExtension ===
@@ -2484,40 +2765,43 @@ async function convertVideo() {
             ? "video/3gpp"
             : "video/mp4";
 
+
     const blob =
         new Blob(
-            [outputBytes],
+            [outputBytes.buffer],
             {
                 type: mime
             }
         );
 
+
     /*
-     * Clean virtual filesystem.
+     * Clean FFmpeg filesystem.
      */
 
     try {
 
-        engine.FS(
-            "unlink",
+        await engine.deleteFile(
             inputName
         );
 
     } catch (_) {}
 
+
     try {
 
-        engine.FS(
-            "unlink",
+        await engine.deleteFile(
             outputName
         );
 
     } catch (_) {}
 
+
     setProgress(
         100,
         "Video conversion complete."
     );
+
 
     return {
         blob,
@@ -2545,42 +2829,56 @@ convertButton.addEventListener(
             return;
         }
 
+
         if (conversionRunning) {
+
             return;
         }
+
 
         conversionRunning =
             true;
 
+
         hideError();
+
         hideWarning();
+
 
         progressCard.style.display =
             "block";
 
+
         resultCard.style.display =
             "none";
+
 
         convertButton.disabled =
             true;
 
+
         resetButton.disabled =
             true;
+
 
         chooseButton.disabled =
             true;
 
+
         convertButton.innerHTML =
             '<span class="loading"></span>Converting...';
+
 
         setProgress(
             0,
             "Starting..."
         );
 
+
         try {
 
             let result;
+
 
             if (
                 currentFile.type.startsWith(
@@ -2607,6 +2905,11 @@ convertButton.addEventListener(
                 );
             }
 
+
+            /*
+             * Remove previous result URL.
+             */
+
             if (currentOutputURL) {
 
                 URL.revokeObjectURL(
@@ -2614,16 +2917,20 @@ convertButton.addEventListener(
                 );
             }
 
+
             currentOutputURL =
                 URL.createObjectURL(
                     result.blob
                 );
 
+
             const originalSize =
                 currentFile.size;
 
+
             const outputSize =
                 result.blob.size;
+
 
             const difference =
                 originalSize > 0
@@ -2637,7 +2944,9 @@ convertButton.addEventListener(
                     )
                     : 0;
 
+
             let sizeMessage;
+
 
             if (
                 difference > 0
@@ -2673,13 +2982,16 @@ convertButton.addEventListener(
                     );
             }
 
+
             resultInfo.textContent =
                 result.extension.toUpperCase() +
                 " • " +
                 sizeMessage;
 
+
             downloadButton.href =
                 currentOutputURL;
+
 
             downloadButton.download =
                 getBaseName(
@@ -2688,22 +3000,28 @@ convertButton.addEventListener(
                 "_Nokia." +
                 result.extension;
 
+
             downloadButton.textContent =
                 "⬇ Download";
+
 
             downloadButton.style.display =
                 "block";
 
+
             resultCard.style.display =
                 "block";
 
+
             progressTitle.textContent =
                 "Finished";
+
 
             setProgress(
                 100,
                 "Your Nokia-ready file is ready to download."
             );
+
 
         } catch (error) {
 
@@ -2712,8 +3030,10 @@ convertButton.addEventListener(
                 error
             );
 
+
             progressCard.style.display =
                 "none";
+
 
             showError(
                 error &&
@@ -2727,14 +3047,18 @@ convertButton.addEventListener(
             conversionRunning =
                 false;
 
+
             convertButton.disabled =
                 false;
+
 
             resetButton.disabled =
                 false;
 
+
             chooseButton.disabled =
                 false;
+
 
             convertButton.textContent =
                 "Convert";
@@ -2752,6 +3076,7 @@ resetButton.addEventListener(
     () => {
 
         if (conversionRunning) {
+
             return;
         }
 
@@ -2765,6 +3090,7 @@ function resetConverter() {
     currentFile =
         null;
 
+
     if (currentPreviewURL) {
 
         URL.revokeObjectURL(
@@ -2774,6 +3100,7 @@ function resetConverter() {
         currentPreviewURL =
             null;
     }
+
 
     if (currentOutputURL) {
 
@@ -2785,20 +3112,29 @@ function resetConverter() {
             null;
     }
 
+
     fileInput.value =
         "";
+
 
     workspace.style.display =
         "none";
 
+
     progressCard.style.display =
         "none";
+
 
     resultCard.style.display =
         "none";
 
+
     hideError();
+
     hideWarning();
+
+    setEngineStatus("");
+
 
     preview.innerHTML = `
         <div class="preview-placeholder">
@@ -2806,41 +3142,54 @@ function resetConverter() {
         </div>
     `;
 
+
     fileName.textContent =
         "";
+
 
     inputType.textContent =
         "—";
 
+
     inputSize.textContent =
         "—";
+
 
     inputDimensions.textContent =
         "—";
 
+
     inputDuration.textContent =
         "—";
+
 
     setProgress(
         0,
         "Ready."
     );
 
+
     mediaPreset.value =
         "nokia";
 
+
     applyPreset();
 
+
     updateControls();
+
 
     convertButton.disabled =
         false;
 
+
     resetButton.disabled =
         false;
 
+
     chooseButton.disabled =
         false;
+
 
     convertButton.textContent =
         "Convert";
@@ -2868,6 +3217,7 @@ document.addEventListener(
                 fileInput.click();
             }
         }
+
 
         if (
             event.key ===
