@@ -39,16 +39,8 @@ body {
     padding: 28px;
     color: var(--text);
     background:
-        radial-gradient(
-            circle at 15% 0%,
-            rgba(56,164,255,.15),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 90% 15%,
-            rgba(112,216,255,.08),
-            transparent 30%
-        ),
+        radial-gradient(circle at 15% 0%, rgba(56,164,255,.15), transparent 35%),
+        radial-gradient(circle at 90% 15%, rgba(112,216,255,.08), transparent 30%),
         var(--bg);
     font-family:
         Inter,
@@ -101,11 +93,7 @@ button:disabled {
     place-items: center;
     font-size: 28px;
     background:
-        linear-gradient(
-            145deg,
-            #2187df,
-            #69d8ff
-        );
+        linear-gradient(145deg, #2187df, #69d8ff);
     box-shadow:
         0 12px 35px rgba(56,164,255,.24),
         inset 0 1px 0 rgba(255,255,255,.45);
@@ -135,11 +123,7 @@ button:disabled {
 
 .card {
     background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.025),
-            transparent
-        ),
+        linear-gradient(180deg, rgba(255,255,255,.025), transparent),
         var(--panel);
     border: 1px solid var(--border);
     border-radius: 25px;
@@ -219,11 +203,7 @@ button:disabled {
 .primary-btn {
     color: white;
     background:
-        linear-gradient(
-            135deg,
-            #2187df,
-            #4dc9ff
-        );
+        linear-gradient(135deg, #2187df, #4dc9ff);
     box-shadow:
         0 8px 25px rgba(56,164,255,.2);
 }
@@ -240,11 +220,7 @@ button:disabled {
     text-decoration: none;
     text-align: center;
     background:
-        linear-gradient(
-            135deg,
-            #36c982,
-            #59dfa2
-        );
+        linear-gradient(135deg, #36c982, #59dfa2);
 }
 
 #fileInput {
@@ -468,11 +444,7 @@ input[type="range"] {
     height: 100%;
     border-radius: inherit;
     background:
-        linear-gradient(
-            90deg,
-            #2187df,
-            #6bd8ff
-        );
+        linear-gradient(90deg, #2187df, #6bd8ff);
     transition: width .15s linear;
 }
 
@@ -570,7 +542,6 @@ input[type="range"] {
 }
 
 @media (max-width: 820px) {
-
     body {
         padding: 15px;
     }
@@ -593,7 +564,6 @@ input[type="range"] {
 }
 
 @media (max-width: 500px) {
-
     .brand h1 {
         font-size: 20px;
     }
@@ -629,19 +599,16 @@ input[type="range"] {
 
 <div class="brand">
 
-```
 <div class="logo">
     📱
 </div>
 
 <div>
     <h1>Nokia Media Converter</h1>
-
     <p>
         Convert photos and videos for your Nokia 4G
     </p>
 </div>
-```
 
 </div>
 
@@ -653,12 +620,8 @@ input[type="range"] {
 
 <section class="card upload-card">
 
-<div
-    class="drop-zone"
-    id="dropZone"
->
+<div class="drop-zone" id="dropZone">
 
-```
 <div class="upload-icon">
     ↑
 </div>
@@ -673,42 +636,45 @@ input[type="range"] {
 </p>
 
 <button
-    class="primary-btn"
-    id="chooseButton"
-    type="button"
+class="primary-btn"
+id="chooseButton"
+type="button"
+
 >
-    Choose Media
+
+```
+Choose Media
+```
+
 </button>
 
 <input
-    id="fileInput"
-    type="file"
-    accept="image/*,video/*"
+id="fileInput"
+type="file"
+accept="image/*,video/*"
+
 >
-```
 
 </div>
 
 </section>
 
-<section
-    class="workspace"
-    id="workspace"
->
+<section class="workspace" id="workspace">
 
 <div class="card preview-card">
 
-```
 <div class="section-title">
 
-    <h3>
-        Preview
-    </h3>
+```
+<h3>
+    Preview
+</h3>
 
-    <span
-        class="file-name"
-        id="fileName"
-    ></span>
+<span
+    class="file-name"
+    id="fileName"
+></span>
+```
 
 </div>
 
@@ -717,280 +683,255 @@ input[type="range"] {
     id="preview"
 >
 
-    <div class="preview-placeholder">
-        Your media preview will appear here.
-    </div>
+```
+<div class="preview-placeholder">
+    Your media preview will appear here.
+</div>
+```
 
 </div>
 
 <div class="info-grid">
 
-    <div class="info">
+```
+<div class="info">
+    <span>Type</span>
+    <strong id="inputType">—</strong>
+</div>
 
-        <span>
-            Type
-        </span>
+<div class="info">
+    <span>Original size</span>
+    <strong id="inputSize">—</strong>
+</div>
 
-        <strong id="inputType">
-            —
-        </strong>
+<div class="info">
+    <span>Dimensions</span>
+    <strong id="inputDimensions">—</strong>
+</div>
 
-    </div>
-
-    <div class="info">
-
-        <span>
-            Original size
-        </span>
-
-        <strong id="inputSize">
-            —
-        </strong>
-
-    </div>
-
-    <div class="info">
-
-        <span>
-            Dimensions
-        </span>
-
-        <strong id="inputDimensions">
-            —
-        </strong>
-
-    </div>
-
-    <div class="info">
-
-        <span>
-            Duration
-        </span>
-
-        <strong id="inputDuration">
-            —
-        </strong>
-
-    </div>
-
+<div class="info">
+    <span>Duration</span>
+    <strong id="inputDuration">—</strong>
 </div>
 ```
+
+</div>
 
 </div>
 
 <div class="card settings-card">
 
-```
 <div class="section-title">
-
     <h3>
         Conversion Settings
     </h3>
-
 </div>
 
 <div class="preset">
 
-    <div class="preset-title">
-        📱 Nokia 4G Preset
-    </div>
-
-    <p>
-        320×240 video, 15 FPS, MPEG-4 video,
-        mono AAC audio and a small file size.
-        Videos are center-cropped to fit the selected resolution.
-    </p>
-
+```
+<div class="preset-title">
+    📱 Nokia 4G Preset
 </div>
 
+<p>
+    320×240 video, 15 FPS, MPEG-4 video,
+    mono AAC audio and a small file size.
+    Videos are center-cropped to fit the selected resolution.
+</p>
+```
+
+</div>
 
 <div class="setting">
 
-    <label for="mediaPreset">
-        Preset
-    </label>
+```
+<label for="mediaPreset">
+    Preset
+</label>
 
-    <select id="mediaPreset">
+<select id="mediaPreset">
 
-        <option value="nokia">
-            Nokia 4G — Recommended
-        </option>
+    <option value="nokia">
+        Nokia 4G — Recommended
+    </option>
 
-        <option value="small">
-            Extra Small — Smallest Files
-        </option>
+    <option value="small">
+        Extra Small — Smallest Files
+    </option>
 
-        <option value="quality">
-            Better Quality
-        </option>
+    <option value="quality">
+        Better Quality
+    </option>
 
-        <option value="custom">
-            Custom
-        </option>
+    <option value="custom">
+        Custom
+    </option>
 
-    </select>
+</select>
+```
 
 </div>
-
 
 <div class="setting">
 
-    <label for="resolution">
-        Video Resolution
-    </label>
+```
+<label for="resolution">
+    Video Resolution
+</label>
 
-    <select id="resolution">
+<select id="resolution">
 
-        <option value="176x144">
-            176 × 144 — QCIF
-        </option>
+    <option value="176x144">
+        176 × 144 — QCIF
+    </option>
 
-        <option
-            value="320x240"
-            selected
-        >
-            320 × 240 — QVGA
-        </option>
+    <option value="320x240" selected>
+        320 × 240 — QVGA
+    </option>
 
-        <option value="640x480">
-            640 × 480 — VGA
-        </option>
+    <option value="640x480">
+        640 × 480 — VGA
+    </option>
 
-    </select>
+</select>
+```
 
 </div>
-
 
 <div class="setting">
 
-    <label for="fps">
-        Frame Rate
-    </label>
+```
+<label for="fps">
+    Frame Rate
+</label>
 
-    <select id="fps">
+<select id="fps">
 
-        <option value="10">
-            10 FPS
-        </option>
+    <option value="10">
+        10 FPS
+    </option>
 
-        <option
-            value="15"
-            selected
-        >
-            15 FPS
-        </option>
+    <option value="15" selected>
+        15 FPS
+    </option>
 
-        <option value="20">
-            20 FPS
-        </option>
+    <option value="20">
+        20 FPS
+    </option>
 
-        <option value="24">
-            24 FPS
-        </option>
+    <option value="24">
+        24 FPS
+    </option>
 
-        <option value="30">
-            30 FPS
-        </option>
+    <option value="30">
+        30 FPS
+    </option>
 
-    </select>
+</select>
+```
 
 </div>
-
 
 <div class="setting">
 
-    <label for="quality">
-        Video Quality
-    </label>
+```
+<label for="quality">
+    Video Quality
+</label>
 
-    <div class="range-row">
+<div class="range-row">
 
-        <input
-            type="range"
-            id="quality"
-            min="1"
-            max="10"
-            value="5"
-        >
+    <input
+        type="range"
+        id="quality"
+        min="1"
+        max="10"
+        value="5"
+    >
 
-        <span
-            class="range-value"
-            id="qualityValue"
-        >
-            5/10
-        </span>
-
-    </div>
+    <span
+        class="range-value"
+        id="qualityValue"
+    >
+        5/10
+    </span>
 
 </div>
+```
 
+</div>
 
 <div class="setting">
 
-    <label for="videoFormat">
-        Output Format
-    </label>
+```
+<label for="videoFormat">
+    Output Format
+</label>
 
-    <select id="videoFormat">
+<select id="videoFormat">
 
-        <option value="mp4">
-            MP4 — Recommended
-        </option>
+    <option value="mp4">
+        MP4 — Recommended
+    </option>
 
-        <option value="3gp">
-            3GP — Try if MP4 doesn't work
-        </option>
+    <option value="3gp">
+        3GP — Try if MP4 doesn't work
+    </option>
 
-    </select>
+</select>
+```
 
 </div>
-
 
 <div class="setting">
 
-    <label for="imageQuality">
-        Image Quality
-    </label>
+```
+<label for="imageQuality">
+    Image Quality
+</label>
 
-    <div class="range-row">
+<div class="range-row">
 
-        <input
-            type="range"
-            id="imageQuality"
-            min="30"
-            max="100"
-            value="85"
-        >
+    <input
+        type="range"
+        id="imageQuality"
+        min="30"
+        max="100"
+        value="85"
+    >
 
-        <span
-            class="range-value"
-            id="imageQualityValue"
-        >
-            85%
-        </span>
-
-    </div>
+    <span
+        class="range-value"
+        id="imageQualityValue"
+    >
+        85%
+    </span>
 
 </div>
+```
 
+</div>
 
 <div class="actions">
 
-    <button
-        class="primary-btn"
-        id="convertButton"
-        type="button"
-    >
-        Convert
-    </button>
+```
+<button
+    class="primary-btn"
+    id="convertButton"
+    type="button"
+>
+    Convert
+</button>
 
-    <button
-        class="secondary-btn"
-        id="resetButton"
-        type="button"
-    >
-        Reset
-    </button>
+<button
+    class="secondary-btn"
+    id="resetButton"
+    type="button"
+>
+    Reset
+</button>
+```
 
 </div>
 
@@ -998,7 +939,6 @@ input[type="range"] {
     class="engine-status"
     id="engineStatus"
 ></div>
-```
 
 </div>
 
@@ -1011,29 +951,30 @@ input[type="range"] {
 
 <div class="progress-header">
 
-```
 <strong id="progressTitle">
     Converting...
 </strong>
 
 <span
-    class="progress-percent"
-    id="progressPercent"
+class="progress-percent"
+id="progressPercent"
+
 >
-    0%
-</span>
+
 ```
+0%
+```
+
+</span>
 
 </div>
 
 <div class="progress-track">
 
-```
 <div
     class="progress-bar"
     id="progressBar"
 ></div>
-```
 
 </div>
 
@@ -1053,27 +994,32 @@ input[type="range"] {
 
 <div class="result">
 
-```
 <div class="result-left">
 
-    <strong>
-        Conversion complete
-    </strong>
+```
+<strong>
+    Conversion complete
+</strong>
 
-    <span id="resultInfo">
-        Your converted file is ready.
-    </span>
+<span id="resultInfo">
+    Your converted file is ready.
+</span>
+```
 
 </div>
 
 <a
-    class="download-btn"
-    id="downloadButton"
-    download
+class="download-btn"
+id="downloadButton"
+download
+
 >
-    ⬇ Download
-</a>
+
 ```
+⬇ Download
+```
+
+</a>
 
 </div>
 
@@ -1090,34 +1036,29 @@ input[type="range"] {
 ></div>
 
 <footer class="footer">
-
 Nokia Media Converter
 •
 Media is processed locally in your browser
-
 </footer>
 
 </div>
 
 <!--
-=========================================================
-FFmpeg.wasm 0.12.10 SINGLE-THREAD
-
-The single-thread core does NOT require SharedArrayBuffer.
-
-The core JavaScript and WASM are fetched with toBlobURL()
-so the FFmpeg worker can load them from blob URLs instead
-of attempting to load them directly cross-origin.
-=========================================================
+    FFmpeg.wasm wrapper.
+    This is NOT the FFmpeg core.
+    The core itself is loaded from ./ffmpeg-core.js below.
 -->
 
 <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+
+<!--
+    FFmpeg utility functions.
+-->
 
 <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
 
 <script>
 "use strict";
-
 
 /* =====================================================
    ELEMENTS
@@ -1222,21 +1163,15 @@ const engineStatus =
 ====================================================== */
 
 let currentFile = null;
-
 let currentPreviewURL = null;
-
 let currentOutputURL = null;
 
 let ffmpeg = null;
-
 let ffmpegLoaded = false;
-
 let ffmpegLoading = false;
-
 let conversionRunning = false;
 
 let ffmpegCoreBlobURL = null;
-
 let ffmpegWasmBlobURL = null;
 
 
@@ -1365,10 +1300,7 @@ function hideWarning() {
 }
 
 
-function setProgress(
-    percent,
-    status
-) {
+function setProgress(percent, status) {
 
     const safe =
         Math.max(
@@ -1386,7 +1318,6 @@ function setProgress(
         Math.round(safe) + "%";
 
     if (status) {
-
         progressStatus.textContent =
             status;
     }
@@ -1423,7 +1354,6 @@ chooseButton.addEventListener(
     () => {
 
         if (!conversionRunning) {
-
             fileInput.click();
         }
     }
@@ -1439,7 +1369,6 @@ fileInput.addEventListener(
             event.target.files[0];
 
         if (file) {
-
             loadFile(file);
         }
     }
@@ -1464,7 +1393,6 @@ fileInput.addEventListener(
                 event.stopPropagation();
 
                 if (!conversionRunning) {
-
                     dropZone.classList.add(
                         "dragover"
                     );
@@ -1502,7 +1430,6 @@ dropZone.addEventListener(
     event => {
 
         if (conversionRunning) {
-
             return;
         }
 
@@ -1513,7 +1440,6 @@ dropZone.addEventListener(
             !files ||
             !files.length
         ) {
-
             return;
         }
 
@@ -1529,9 +1455,7 @@ dropZone.addEventListener(
 function loadFile(file) {
 
     hideError();
-
     hideWarning();
-
     setEngineStatus("");
 
     if (
@@ -1557,9 +1481,7 @@ function loadFile(file) {
     }
 
     currentPreviewURL =
-        URL.createObjectURL(
-            file
-        );
+        URL.createObjectURL(file);
 
     if (currentOutputURL) {
 
@@ -1587,9 +1509,7 @@ function loadFile(file) {
         file.type || "Unknown";
 
     inputSize.textContent =
-        formatBytes(
-            file.size
-        );
+        formatBytes(file.size);
 
     inputDimensions.textContent =
         "—";
@@ -1601,9 +1521,7 @@ function loadFile(file) {
         "";
 
     if (
-        file.type.startsWith(
-            "image/"
-        )
+        file.type.startsWith("image/")
     ) {
 
         loadImagePreview();
@@ -1628,9 +1546,7 @@ function loadFile(file) {
 function loadImagePreview() {
 
     const img =
-        document.createElement(
-            "img"
-        );
+        document.createElement("img");
 
     img.src =
         currentPreviewURL;
@@ -1655,9 +1571,7 @@ function loadImagePreview() {
             );
         };
 
-    preview.appendChild(
-        img
-    );
+    preview.appendChild(img);
 }
 
 
@@ -1668,9 +1582,7 @@ function loadImagePreview() {
 function loadVideoPreview() {
 
     const video =
-        document.createElement(
-            "video"
-        );
+        document.createElement("video");
 
     video.src =
         currentPreviewURL;
@@ -1710,9 +1622,7 @@ function loadVideoPreview() {
         }
     );
 
-    preview.appendChild(
-        video
-    );
+    preview.appendChild(video);
 }
 
 
@@ -1753,10 +1663,7 @@ function applyPreset() {
     const preset =
         mediaPreset.value;
 
-    if (
-        preset ===
-        "nokia"
-    ) {
+    if (preset === "nokia") {
 
         resolution.value =
             "320x240";
@@ -1771,10 +1678,7 @@ function applyPreset() {
             "mp4";
     }
 
-    if (
-        preset ===
-        "small"
-    ) {
+    if (preset === "small") {
 
         resolution.value =
             "176x144";
@@ -1789,10 +1693,7 @@ function applyPreset() {
             "3gp";
     }
 
-    if (
-        preset ===
-        "quality"
-    ) {
+    if (preset === "quality") {
 
         resolution.value =
             "640x480";
@@ -1816,14 +1717,11 @@ function applyPreset() {
 function updateControls() {
 
     if (!currentFile) {
-
         return;
     }
 
     const image =
-        currentFile.type.startsWith(
-            "image/"
-        );
+        currentFile.type.startsWith("image/");
 
     resolution.disabled =
         image;
@@ -1894,23 +1792,17 @@ async function convertImage() {
     width =
         Math.max(
             1,
-            Math.round(
-                width * scale
-            )
+            Math.round(width * scale)
         );
 
     height =
         Math.max(
             1,
-            Math.round(
-                height * scale
-            )
+            Math.round(height * scale)
         );
 
     const canvas =
-        document.createElement(
-            "canvas"
-        );
+        document.createElement("canvas");
 
     canvas.width =
         width;
@@ -1956,9 +1848,7 @@ async function convertImage() {
                 canvas.toBlob(
                     resolve,
                     "image/jpeg",
-                    Number(
-                        imageQuality.value
-                    ) / 100
+                    Number(imageQuality.value) / 100
                 );
             }
         );
@@ -1984,7 +1874,7 @@ async function convertImage() {
 
 
 /* =====================================================
-   LOAD MODERN FFMPEG.WASM
+   FFMPEG.WASM LOADER
 ====================================================== */
 
 async function loadFFmpeg() {
@@ -1993,15 +1883,12 @@ async function loadFFmpeg() {
         ffmpegLoaded &&
         ffmpeg
     ) {
-
         return ffmpeg;
     }
 
     if (ffmpegLoading) {
 
-        while (
-            ffmpegLoading
-        ) {
+        while (ffmpegLoading) {
 
             await new Promise(
                 resolve =>
@@ -2016,7 +1903,6 @@ async function loadFFmpeg() {
             ffmpegLoaded &&
             ffmpeg
         ) {
-
             return ffmpeg;
         }
     }
@@ -2039,10 +1925,9 @@ async function loadFFmpeg() {
         );
 
 
-        /*
-         * 0.12 uses the FFmpeg class instead of
-         * createFFmpeg().
-         */
+        /* ---------------------------------------------
+           Check wrapper
+        --------------------------------------------- */
 
         if (
             typeof window.FFmpeg ===
@@ -2050,7 +1935,7 @@ async function loadFFmpeg() {
         ) {
 
             throw new Error(
-                "The FFmpeg library JavaScript file did not load."
+                "The FFmpeg wrapper library did not load."
             );
         }
 
@@ -2065,6 +1950,10 @@ async function loadFFmpeg() {
             );
         }
 
+
+        /* ---------------------------------------------
+           Check utility library
+        --------------------------------------------- */
 
         if (
             typeof window.FFmpegUtil ===
@@ -2095,18 +1984,17 @@ async function loadFFmpeg() {
             window.FFmpegUtil.toBlobURL;
 
 
-        /*
-         * Create a fresh single-thread FFmpeg
-         * instance.
-         */
+        /* ---------------------------------------------
+           Create FFmpeg
+        --------------------------------------------- */
 
         ffmpeg =
             new FFmpegClass();
 
 
-        /*
-         * Logging.
-         */
+        /* ---------------------------------------------
+           Logging
+        --------------------------------------------- */
 
         ffmpeg.on(
             "log",
@@ -2120,18 +2008,16 @@ async function loadFFmpeg() {
         );
 
 
-        /*
-         * Progress.
-         */
+        /* ---------------------------------------------
+           Progress
+        --------------------------------------------- */
 
         ffmpeg.on(
             "progress",
             ({ progress }) => {
 
                 if (
-                    Number.isFinite(
-                        progress
-                    )
+                    Number.isFinite(progress)
                 ) {
 
                     const percent =
@@ -2143,8 +2029,7 @@ async function loadFFmpeg() {
                                     1,
                                     progress
                                 )
-                            ) *
-                            82
+                            ) * 82
                         );
 
                     setProgress(
@@ -2157,50 +2042,61 @@ async function loadFFmpeg() {
 
 
         /*
-         * Official single-thread core.
+         * IMPORTANT:
          *
-         * We deliberately use @ffmpeg/core rather
-         * than @ffmpeg/core-mt.
+         * Your GitHub repository currently contains:
+         *
+         *     ffmpeg-core.js
+         *
+         * in the ROOT of the repository.
+         *
+         * Therefore we use:
+         *
+         *     ./ffmpeg-core.js
+         *
+         * here.
          */
 
-        const baseURL =
-            "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
+        const localCoreURL =
+            "./ffmpeg-core.js";
+
+
+        /*
+         * The WASM file is too large for GitHub's
+         * normal browser uploader, so it is loaded
+         * from the official @ffmpeg/core package.
+         */
+
+        const wasmURL =
+            "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd/ffmpeg-core.wasm";
 
 
         setProgress(
             4,
-            "Downloading FFmpeg engine..."
+            "Loading your GitHub FFmpeg core..."
         );
 
 
         /*
-         * Download the JavaScript core through
-         * toBlobURL().
-         *
-         * This converts the cross-origin response
-         * into a local blob URL for the FFmpeg worker.
+         * Convert the local core JavaScript into
+         * a blob URL so the FFmpeg worker can load it.
          */
 
         ffmpegCoreBlobURL =
             await toBlobURL(
-                baseURL +
-                "/ffmpeg-core.js",
+                localCoreURL,
                 "text/javascript",
-                true,
+                false,
                 progress => {
 
                     if (
-                        Number.isFinite(
-                            progress
-                        )
+                        Number.isFinite(progress)
                     ) {
 
                         setProgress(
                             4 +
-                            Math.round(
-                                progress * 3
-                            ),
-                            "Downloading FFmpeg engine..."
+                            Math.round(progress * 3),
+                            "Loading your GitHub FFmpeg core..."
                         );
                     }
                 }
@@ -2214,28 +2110,23 @@ async function loadFFmpeg() {
 
 
         /*
-         * Same treatment for the WASM binary.
+         * Download only the large WASM binary.
          */
 
         ffmpegWasmBlobURL =
             await toBlobURL(
-                baseURL +
-                "/ffmpeg-core.wasm",
+                wasmURL,
                 "application/wasm",
                 true,
                 progress => {
 
                     if (
-                        Number.isFinite(
-                            progress
-                        )
+                        Number.isFinite(progress)
                     ) {
 
                         setProgress(
                             8 +
-                            Math.round(
-                                progress * 3
-                            ),
+                            Math.round(progress * 3),
                             "Downloading FFmpeg WebAssembly..."
                         );
                     }
@@ -2250,13 +2141,9 @@ async function loadFFmpeg() {
 
 
         /*
-         * IMPORTANT:
+         * Single-thread core.
          *
-         * No workerURL is supplied here.
-         *
-         * That means this is the SINGLE-THREAD core.
-         *
-         * SharedArrayBuffer is not required.
+         * No SharedArrayBuffer is required.
          */
 
         await ffmpeg.load({
@@ -2292,17 +2179,13 @@ async function loadFFmpeg() {
             error
         );
 
-
         ffmpeg =
             null;
 
         ffmpegLoaded =
             false;
 
-
-        setEngineStatus(
-            ""
-        );
+        setEngineStatus("");
 
 
         let details =
@@ -2322,7 +2205,7 @@ async function loadFFmpeg() {
         throw new Error(
             "The video converter could not start." +
             details +
-            "\n\nMake sure the GitHub Pages site is connected to the internet and reload the page."
+            "\n\nThe converter uses your GitHub ffmpeg-core.js and the FFmpeg WebAssembly file."
         );
 
     } finally {
@@ -2334,15 +2217,10 @@ async function loadFFmpeg() {
 
 
 /* =====================================================
-   GET FETCH FILE
+   FETCH FILE
 ====================================================== */
 
 function getFetchFile() {
-
-    /*
-     * Modern FFmpeg.wasm uses fetchFile from
-     * @ffmpeg/util.
-     */
 
     if (
         window.FFmpegUtil &&
@@ -2352,11 +2230,6 @@ function getFetchFile() {
 
         return window.FFmpegUtil.fetchFile;
     }
-
-
-    /*
-     * Local File/Blob fallback.
-     */
 
     return async function(file) {
 
@@ -2393,10 +2266,6 @@ async function convertVideo() {
     );
 
 
-    /*
-     * Determine the source extension.
-     */
-
     let inputExtension =
         currentFile.name
             .split(".")
@@ -2409,29 +2278,17 @@ async function convertVideo() {
 
 
     if (!inputExtension) {
-
-        inputExtension =
-            "mp4";
+        inputExtension = "mp4";
     }
 
 
-    if (
-        inputExtension ===
-        "quicktime"
-    ) {
-
-        inputExtension =
-            "mov";
+    if (inputExtension === "quicktime") {
+        inputExtension = "mov";
     }
 
 
-    if (
-        inputExtension ===
-        "mpeg"
-    ) {
-
-        inputExtension =
-            "mpg";
+    if (inputExtension === "mpeg") {
+        inputExtension = "mpg";
     }
 
 
@@ -2441,8 +2298,7 @@ async function convertVideo() {
 
 
     const outputExtension =
-        videoFormat.value ===
-        "3gp"
+        videoFormat.value === "3gp"
             ? "3gp"
             : "mp4";
 
@@ -2452,25 +2308,13 @@ async function convertVideo() {
         outputExtension;
 
 
-    /*
-     * Clean previous virtual files.
-     */
-
     try {
-
-        await engine.deleteFile(
-            inputName
-        );
-
+        await engine.deleteFile(inputName);
     } catch (_) {}
 
 
     try {
-
-        await engine.deleteFile(
-            outputName
-        );
-
+        await engine.deleteFile(outputName);
     } catch (_) {}
 
 
@@ -2480,16 +2324,8 @@ async function convertVideo() {
     );
 
 
-    /*
-     * Modern API:
-     *
-     * await ffmpeg.writeFile(...)
-     */
-
     const sourceData =
-        await fetchFile(
-            currentFile
-        );
+        await fetchFile(currentFile);
 
 
     await engine.writeFile(
@@ -2511,35 +2347,25 @@ async function convertVideo() {
 
 
     const targetWidth =
-        parts[0] ||
-        320;
+        parts[0] || 320;
 
 
     const targetHeight =
-        parts[1] ||
-        240;
+        parts[1] || 240;
 
 
     const frameRate =
-        Number(
-            fps.value
-        ) ||
-        15;
+        Number(fps.value) || 15;
 
 
     const qualityNumber =
-        Number(
-            quality.value
-        ) ||
-        5;
+        Number(quality.value) || 5;
 
 
     /*
-     * FFmpeg MPEG-4 qscale.
+     * Lower qscale = higher quality.
      *
-     * Lower number = higher quality.
-     *
-     * UI:
+     * The UI is the opposite:
      * 1 = lower
      * 10 = higher
      */
@@ -2549,8 +2375,7 @@ async function convertVideo() {
             2,
             Math.min(
                 12,
-                11 -
-                qualityNumber
+                11 - qualityNumber
             )
         );
 
@@ -2558,22 +2383,12 @@ async function convertVideo() {
     /*
      * CENTER CROP
      *
-     * First enlarge the video enough to completely
-     * fill the requested rectangle.
-     *
-     * Then crop the excess from the centre.
-     *
-     * This means:
-     *
-     * 16:9 -> 4:3:
-     * left/right edges removed.
-     *
-     * Tall video -> 4:3:
-     * top/bottom removed.
-     *
+     * No stretching.
      * No black bars.
      *
-     * No stretching.
+     * The video is enlarged enough to fill the
+     * selected resolution and then cropped from
+     * the centre.
      */
 
     const videoFilter =
@@ -2589,10 +2404,6 @@ async function convertVideo() {
         ":(in_w-out_w)/2:" +
         "(in_h-out_h)/2";
 
-
-    /*
-     * Build modern FFmpeg command.
-     */
 
     const command = [
 
@@ -2628,14 +2439,7 @@ async function convertVideo() {
     ];
 
 
-    /*
-     * 3GP container when selected.
-     */
-
-    if (
-        outputExtension ===
-        "3gp"
-    ) {
+    if (outputExtension === "3gp") {
 
         command.push(
             "-f",
@@ -2663,12 +2467,6 @@ async function convertVideo() {
 
     try {
 
-        /*
-         * Modern 0.12 API:
-         *
-         * ffmpeg.exec([...])
-         */
-
         await engine.exec(
             command
         );
@@ -2682,11 +2480,7 @@ async function convertVideo() {
 
 
         try {
-
-            await engine.deleteFile(
-                inputName
-            );
-
+            await engine.deleteFile(inputName);
         } catch (_) {}
 
 
@@ -2713,12 +2507,6 @@ async function convertVideo() {
 
     try {
 
-        /*
-         * Modern 0.12 API:
-         *
-         * await ffmpeg.readFile(...)
-         */
-
         outputData =
             await engine.readFile(
                 outputName
@@ -2733,11 +2521,7 @@ async function convertVideo() {
 
 
         try {
-
-            await engine.deleteFile(
-                inputName
-            );
-
+            await engine.deleteFile(inputName);
         } catch (_) {}
 
 
@@ -2747,53 +2531,34 @@ async function convertVideo() {
     }
 
 
-    /*
-     * Make Blob.
-     */
-
     const outputBytes =
         outputData instanceof Uint8Array
             ? outputData
-            : new Uint8Array(
-                outputData
-            );
+            : new Uint8Array(outputData);
 
 
     const mime =
-        outputExtension ===
-        "3gp"
+        outputExtension === "3gp"
             ? "video/3gpp"
             : "video/mp4";
 
 
     const blob =
         new Blob(
-            [outputBytes.buffer],
+            [outputBytes],
             {
                 type: mime
             }
         );
 
 
-    /*
-     * Clean FFmpeg filesystem.
-     */
-
     try {
-
-        await engine.deleteFile(
-            inputName
-        );
-
+        await engine.deleteFile(inputName);
     } catch (_) {}
 
 
     try {
-
-        await engine.deleteFile(
-            outputName
-        );
-
+        await engine.deleteFile(outputName);
     } catch (_) {}
 
 
@@ -2805,8 +2570,7 @@ async function convertVideo() {
 
     return {
         blob,
-        extension:
-            outputExtension,
+        extension: outputExtension,
         mime
     };
 }
@@ -2831,7 +2595,6 @@ convertButton.addEventListener(
 
 
         if (conversionRunning) {
-
             return;
         }
 
@@ -2839,15 +2602,12 @@ convertButton.addEventListener(
         conversionRunning =
             true;
 
-
         hideError();
-
         hideWarning();
 
 
         progressCard.style.display =
             "block";
-
 
         resultCard.style.display =
             "none";
@@ -2856,10 +2616,8 @@ convertButton.addEventListener(
         convertButton.disabled =
             true;
 
-
         resetButton.disabled =
             true;
-
 
         chooseButton.disabled =
             true;
@@ -2881,18 +2639,14 @@ convertButton.addEventListener(
 
 
             if (
-                currentFile.type.startsWith(
-                    "image/"
-                )
+                currentFile.type.startsWith("image/")
             ) {
 
                 result =
                     await convertImage();
 
             } else if (
-                currentFile.type.startsWith(
-                    "video/"
-                )
+                currentFile.type.startsWith("video/")
             ) {
 
                 result =
@@ -2905,10 +2659,6 @@ convertButton.addEventListener(
                 );
             }
 
-
-            /*
-             * Remove previous result URL.
-             */
 
             if (currentOutputURL) {
 
@@ -2939,8 +2689,7 @@ convertButton.addEventListener(
                             1 -
                             outputSize /
                             originalSize
-                        ) *
-                        100
+                        ) * 100
                     )
                     : 0;
 
@@ -2948,38 +2697,26 @@ convertButton.addEventListener(
             let sizeMessage;
 
 
-            if (
-                difference > 0
-            ) {
+            if (difference > 0) {
 
                 sizeMessage =
-                    formatBytes(
-                        outputSize
-                    ) +
+                    formatBytes(outputSize) +
                     " • " +
                     difference +
                     "% smaller";
 
-            } else if (
-                difference < 0
-            ) {
+            } else if (difference < 0) {
 
                 sizeMessage =
-                    formatBytes(
-                        outputSize
-                    ) +
+                    formatBytes(outputSize) +
                     " • " +
-                    Math.abs(
-                        difference
-                    ) +
+                    Math.abs(difference) +
                     "% larger";
 
             } else {
 
                 sizeMessage =
-                    formatBytes(
-                        outputSize
-                    );
+                    formatBytes(outputSize);
             }
 
 
@@ -2994,9 +2731,7 @@ convertButton.addEventListener(
 
 
             downloadButton.download =
-                getBaseName(
-                    currentFile.name
-                ) +
+                getBaseName(currentFile.name) +
                 "_Nokia." +
                 result.extension;
 
@@ -3047,18 +2782,14 @@ convertButton.addEventListener(
             conversionRunning =
                 false;
 
-
             convertButton.disabled =
                 false;
-
 
             resetButton.disabled =
                 false;
 
-
             chooseButton.disabled =
                 false;
-
 
             convertButton.textContent =
                 "Convert";
@@ -3076,7 +2807,6 @@ resetButton.addEventListener(
     () => {
 
         if (conversionRunning) {
-
             return;
         }
 
@@ -3130,9 +2860,7 @@ function resetConverter() {
 
 
     hideError();
-
     hideWarning();
-
     setEngineStatus("");
 
 
@@ -3174,18 +2902,14 @@ function resetConverter() {
 
 
     applyPreset();
-
-
     updateControls();
 
 
     convertButton.disabled =
         false;
 
-
     resetButton.disabled =
         false;
-
 
     chooseButton.disabled =
         false;
@@ -3206,22 +2930,19 @@ document.addEventListener(
 
         if (
             event.ctrlKey &&
-            event.key.toLowerCase() ===
-                "o"
+            event.key.toLowerCase() === "o"
         ) {
 
             event.preventDefault();
 
             if (!conversionRunning) {
-
                 fileInput.click();
             }
         }
 
 
         if (
-            event.key ===
-            "Escape" &&
+            event.key === "Escape" &&
             currentFile &&
             !conversionRunning
         ) {
